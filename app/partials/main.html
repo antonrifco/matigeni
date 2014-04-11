@@ -1,0 +1,168 @@
+<nav class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Matigeni</a>
+        </div>
+        <div class="collapse navbar-collapse" id="menu-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#">Player Rank</a></li>
+                <li><a href="#">Explore</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="well well-sm">
+                    <div class="media">
+                        <a class="thumbnail pull-left" href="#">
+                            <img class="media-object" src="http://critterapp.pagodabox.com/img/user.jpg">
+                        </a>
+                        <div class="media-body">
+                            <h4 class="media-heading">First Last Name</h4>
+                            <p><span class="label label-info">888 photos</span> <span class="label label-warning">150 followers</span></p>
+                            <p>
+                                <a href="#" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-remove-circle"></span> Logout</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- The carousel -->
+        <div id="transition-timer-carousel" class="carousel slide transition-timer-carousel" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#transition-timer-carousel" data-slide-to="0" class="active"></li>
+                <li data-target="#transition-timer-carousel" data-slide-to="1"></li>
+                <li data-target="#transition-timer-carousel" data-slide-to="2"></li>
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+                <div class="item active">
+                    <center>
+                        <img src="img/cher.jpg" />
+                    </center>
+                    <div class="carousel-caption">
+                        <h1 class="carousel-caption-header">Slide 1</h1>
+                        <p class="carousel-caption-text hidden-sm hidden-xs">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dignissim aliquet rutrum. Praesent vitae ante in nisi condimentum egestas. Aliquam.
+                        </p>
+                    </div>
+                </div>
+                <div class="item">
+                    <center>
+                        <img src="img/cherno.jpg" />
+                    </center>
+                    <div class="carousel-caption">
+                        <h1 class="carousel-caption-header">Slide 2</h1>
+                        <p class="carousel-caption-text hidden-sm hidden-xs">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dignissim aliquet rutrum. Praesent vitae ante in nisi condimentum egestas. Aliquam.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <center>
+                        <img src="img/chernobyl.jpg" />
+                    </center>
+                    <div class="carousel-caption">
+                        <h1 class="carousel-caption-header">Slide 3</h1>
+                        <p class="carousel-caption-text hidden-sm hidden-xs">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dignissim aliquet rutrum. Praesent vitae ante in nisi condimentum egestas. Aliquam.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <a class="left carousel-control" href="#transition-timer-carousel" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+            </a>
+            <a class="right carousel-control" href="#transition-timer-carousel" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+            </a>
+
+            <!-- Timer "progress bar" -->
+            <hr class="transition-timer-carousel-progress-bar animate" />
+        </div>
+    </div>
+    <div class="col-md-4" id="accordion">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <span data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-comment"></span> Chat</span>
+            </div>
+            <div class="panel-collapse collapse in" id="collapseOne">
+                <div class="panel-body">
+                    <ul class="chat">
+                        <li class="left clearfix"><span class="chat-img pull-left">
+                                <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+                            </span>
+                            <div class="chat-body clearfix">
+                                <div class="header">
+                                    <strong class="primary-font">Jack Sparrow</strong> <small class="pull-right text-muted">
+                                        <span class="glyphicon glyphicon-time"></span>12 mins ago</small>
+                                </div>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+                                    dolor, quis ullamcorper ligula sodales.
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel-footer">
+                    <div class="input-group">
+                        <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+                        <span class="input-group-btn">
+                            <button class="btn btn-warning btn-sm" id="btn-chat">
+                                Send</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading" >
+                <span data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><span class="glyphicon glyphicon-comment"></span> Participants</span>
+            </div>
+            <div class="panel-collapse collapse" id="collapseTwo">
+                <div class="panel-body">
+                    <ul class="chat">
+                        <li class="left clearfix"><span class="chat-img pull-left">
+                                <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+                            </span>
+                            <div class="chat-body clearfix">
+                                <div class="header">
+                                    <strong class="primary-font">Jack Sparrow</strong> <small class="pull-right text-muted">
+                                        <span class="glyphicon glyphicon-time"></span>12 mins ago</small>
+                                </div>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+                                    dolor, quis ullamcorper ligula sodales.
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <>
+</div>
