@@ -57,6 +57,10 @@
 .carousel-inner .item img {
     height: 400px;
 }
+
+.carousel control {
+    cursor: pointer;
+}
 /* END: Carousel Timer */
 
 /* START: Section for Chat */
