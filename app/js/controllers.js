@@ -328,20 +328,19 @@ angular.module('myApp.controllers', ['myApp.services'])
                             });
                             
                             $.each($scope.questions, function(o, v){
+                                if(typeof v === 'undefined') return true;
                                 if($scope.activequestion.id === v.id) {
                                     $scope.questions.splice(o, 1);
                                     return true;
                                 }
                             });
-
+                            
                             if($scope.questions.length == 0) {
-                                console.log('no more');
                                 gritter_alert('Notification', 'You have answered all the questions. There\'s no more questions');
                                 $scope.activequestion = null;
                                 $scope.hints = DEFAULT_HINTS;
                             } else {
                                 servertime.async().then(function(time) {
-                                    console.log('more');
                                     var chat = {
                                         action: 'chat',
                                         name: $scope.botname,
@@ -353,13 +352,15 @@ angular.module('myApp.controllers', ['myApp.services'])
 
                                     gritter_alert('Notification', 'Tetoott Tetoott. Here come New question...');
 
-                                    /*$.each($scope.questions, function(key, question){
+                                    $.each($scope.questions, function(key, question){
                                         $scope.activequestion = question;
-                                        return;
-                                    });*/
+                                        return false;
+                                    });
+                                    $scope.hints = $scope.activequestion.hints;
                                 });
                             }
                             
+                            $scope.myguess = '';
                         });
                         
                     } else {

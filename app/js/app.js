@@ -8,7 +8,7 @@ var myApp = angular.module('myApp', [
     'myApp.services',
     'myApp.directives',
     'myApp.controllers',
-    "firebase", 'ui.bootstrap'
+    "firebase", 'ui.bootstrap', "ngAnimate-animate.css"
 ]).
 config(['$routeProvider', function($routeProvider) {
         $routeProvider.when('/game', {templateUrl: 'partials/main.html', controller: 'MainCtrl'});
