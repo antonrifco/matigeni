@@ -32,6 +32,7 @@ function gritter_alert(def_title, def_content) {
         title: def_title,
         text: def_content,
         class_name: 'hidden-xs',
+        image: 'img/gritter/avatar_cathead.png',
         sticky: false,
         time: gritter_time
     });

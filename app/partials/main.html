@@ -31,7 +31,7 @@
                         <div class="media-body">
                             <h4 class="media-heading" ng-show="!user">Guest</h4>
                             <h4 class="media-heading" ng-show="user">{{user.displayName}}</h4>
-                            <p ng-show="user"><span class="label label-info">888 photos</span> <span class="label label-warning">150 followers</span></p>
+                            <p ng-show="user"><span class="label label-info">{{user.points}} points</span> <span class="label label-warning">{{user.facts.length}} attempts</span></p>
                             <p>
                                 <span ng-show="user" ng-click="logout()" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-remove-circle"></span> Logout</span>
                                 <span ng-show="!user" ng-click="login()" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-flash"></span> Login</span>
@@ -108,7 +108,8 @@
             <div class="panel-collapse collapse in" id="collapseOne">
                 <div class="panel-body" id='chat-text-list' scrolledarea ng-cloak>
                     <ul class="chat">
-                        <li class="left clearfix"><span class="chat-img pull-left">
+                        <li class="left clearfix">
+                            <span class="chat-img pull-left">
                                 <img src="http://placehold.it/40/55C1E7/fff&text=MG" alt="User Avatar" class="img-circle" />
                             </span>
                             <div class="chat-body clearfix">
@@ -119,6 +120,20 @@
                                 <p>
                                     Welcome to Matigeni game.
                                 </p>
+                            </div>
+                        </li>
+                        <li class="left clearfix dn-flip-x" ng-repeat="chat in chats" ng-show="user" ng-cloak>
+                            <span class="chat-img pull-left">
+                                <img ng-src="https://graph.facebook.com/{{chat.userid}}/picture?small" alt="User Avatar" class="img-circle" />
+                            </span>
+                            <div class="chat-body clearfix">
+                                <div class="header">
+                                    <strong class="primary-font">{{chat.name}}</strong>
+                                    <small class="pull-right text-muted chat-time">
+                                        <span class="glyphicon glyphicon-time"></span>{{chat.timestamp*1000 | date:'MMM d,yyyy H:mm'}}
+                                    </small>
+                                </div>
+                                <p ng-bind-html="chat.text"></p>
                             </div>
                         </li>
                     </ul>
@@ -133,11 +148,18 @@
                         </span>
                     </div>
                     <div class="input-group" ng-show="user" ng-cloak>
-                        <input type="text" class="form-control input-sm" placeholder="Type your message..." ng-model="chattext" ng-enter="sendtext()"/>
+                        <input type="text" class="form-control input-sm" ng-show="!sendingtext" placeholder="Type your message..." ng-model="chattext" ng-enter="sendtext()"/>
                         <span class="input-group-btn" >
-                            <button class="sendbutton" ng-click="sendtext()">
+                            <button class="sendbutton" ng-click="sendtext()" ng-show="!sendingtext">
                                 <span class="glyphicon glyphicon-send" style="font-size: 19px"></span>
                             </button>
+                        </span>
+                         <span class="input-group-btn" ng-show="sendingtext">
+                            <img src='img/ajax-loader.gif'/>
+                            <img src='img/ajax-loader.gif'/>
+                            <img src='img/ajax-loader.gif'/>
+                            <img src='img/ajax-loader.gif'/>
+                            <img src='img/ajax-loader.gif'/>
                         </span>
                     </div>
                 </div>
