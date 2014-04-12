@@ -12,11 +12,13 @@ var myApp = angular.module('myApp', [
 ]).
 config(['$routeProvider', function($routeProvider) {
         $routeProvider.when('/game', {templateUrl: 'partials/main.html', controller: 'MainCtrl'});
+        $routeProvider.when('/about', {templateUrl: 'partials/about.html', controller: 'AboutCtrl'});
         $routeProvider.otherwise({redirectTo: '/game'});
     }]);
 
 myApp.run(['$rootScope', '$modal', 'HASHBANG', 'FIREBASE_URL', '$firebaseSimpleLogin', '$firebase', '$log',
     function($rootScope, $modal, HASHBANG, URL, $firebaseSimpleLogin, $firebase, $log) {
+        $rootScope.page = 'main';
         $rootScope.loaded = false;
         $rootScope.authing = true;
         $rootScope.user = null;

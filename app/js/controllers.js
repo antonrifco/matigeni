@@ -3,8 +3,12 @@
 /* Controllers */
 
 angular.module('myApp.controllers', ['myApp.services'])
+        .controller('AboutCtrl', ['$rootScope', function($rootScope){
+            $rootScope.page = 'about';
+        }])
         .controller('MainCtrl', ['$log', '$scope', '$rootScope', '$timeout', 'DEFAULT_HINTS', 'servertime',
             function($log, $scope, $rootScope, $timeout, DEFAULT_HINTS, servertime) {
+                $rootScope.page = 'main';
                 $("#transition-timer-carousel").on("slide.bs.carousel", function(event) {
                     //The animate class gets removed so that it jumps straight back to 0%
                     $(".transition-timer-carousel-progress-bar", this)

@@ -8,9 +8,31 @@
         <link rel="stylesheet" href="css/jquery.mCustomScrollbar.css"/>
         <link rel="stylesheet" href="css/animate.css"/>
         <link rel="stylesheet" href="css/jquery.gritter.css"/>
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-social.css">
+        <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
         <link id="favicon" rel="shortcut icon" href="img/favicon.ico">
     </head>
     <body>
+        <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Matigeni</a>
+            </div>
+            <div class="collapse navbar-collapse" id="menu-collapse">
+                <ul class="nav navbar-nav">
+                    <li ng-class="{active:page=='main'}"><a href="#">Home</a></li>
+                    <li><a href="#">Player Rank</a></li>
+                    <li ng-class="{active:page=='about'}"><a href="#/about">About</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
         <div ng-view></div>
         <center>
             <pre>Matigeni. 2014.</pre>
