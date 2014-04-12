@@ -52,7 +52,6 @@ myApp.run(['$rootScope', '$modal', 'HASHBANG', 'FIREBASE_URL', '$firebaseSimpleL
                 $rootScope.loginstatus = 'logout';
                 // user is logged out
                 $log.debug('user is logged out');
-                $rootScope.putoffline();
             }
         });
         
