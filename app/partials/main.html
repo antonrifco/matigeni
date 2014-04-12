@@ -52,37 +52,13 @@
 
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
-                <div class="item active">
+                <div class="item" ng-class="{'active':$index==0}" ng-repeat="hint in hints">
                     <center>
-                        <img src="img/cher.jpg" />
+                        <img ng-src="{{hint.image}}"/>
                     </center>
                     <div class="carousel-caption">
-                        <h1 class="carousel-caption-header">Slide 1</h1>
-                        <p class="carousel-caption-text hidden-sm hidden-xs">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dignissim aliquet rutrum. Praesent vitae ante in nisi condimentum egestas. Aliquam.
-                        </p>
-                    </div>
-                </div>
-                <div class="item">
-                    <center>
-                        <img src="img/cherno.jpg" />
-                    </center>
-                    <div class="carousel-caption">
-                        <h1 class="carousel-caption-header">Slide 2</h1>
-                        <p class="carousel-caption-text hidden-sm hidden-xs">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dignissim aliquet rutrum. Praesent vitae ante in nisi condimentum egestas. Aliquam.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="item">
-                    <center>
-                        <img src="img/chernobyl.jpg" />
-                    </center>
-                    <div class="carousel-caption">
-                        <h1 class="carousel-caption-header">Slide 3</h1>
-                        <p class="carousel-caption-text hidden-sm hidden-xs">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse dignissim aliquet rutrum. Praesent vitae ante in nisi condimentum egestas. Aliquam.
+                        <h1 class="carousel-caption-header">{{hint.title}}</h1>
+                        <p class="carousel-caption-text hidden-sm hidden-xs" ng-bind-html="hint.text">
                         </p>
                     </div>
                 </div>
@@ -124,7 +100,8 @@
                         </li>
                         <li class="left clearfix dn-flip-x" ng-repeat="chat in chats" ng-show="user" ng-cloak>
                             <span class="chat-img pull-left">
-                                <img ng-src="https://graph.facebook.com/{{chat.userid}}/picture?small" alt="User Avatar" class="img-circle" />
+                                <img ng-show="chat.userid" ng-src="https://graph.facebook.com/{{chat.userid}}/picture?small" alt="User Avatar" class="img-circle" />
+                                <img ng-hide="chat.userid" src="http://placehold.it/40/55C1E7/fff&text=MG" alt="User Avatar" class="img-circle" />
                             </span>
                             <div class="chat-body clearfix">
                                 <div class="header">

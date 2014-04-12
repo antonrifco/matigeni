@@ -25,6 +25,23 @@ angular.module('myApp.controllers', ['myApp.services'])
                 $scope.users = {};
                 $scope.lastupdate = Math.round(+new Date() / 1000);
                 $scope.sendingtext = false;
+                $scope.answer = null;
+                $scope.point = 0;
+                $scope.hints = [
+                    {
+                        image: 'img/matigeni.jpg',
+                        title: 'Matigeni',
+                        text: 'Matigeni is a simple game of location guessing. We feature locations on earth that were damaged because of human error.' 
+                    },{
+                        image: 'img/awareness.jpg',
+                        title: 'Raise Awareness',
+                        text: 'We try to get people\'s awareness about man made disasters that were happening on earth. But, NOT the conventional way.'  
+                    },{
+                        image: 'img/spaceapps.png',
+                        title: 'NASA SpaceApps Challenge Project',
+                        text: 'We are one of the projects submitted for NASA Space Apps Challenge in 2014.' 
+                    }
+                ];
 
                 $scope.$watch(
                         'user', function() {
@@ -191,7 +208,27 @@ angular.module('myApp.controllers', ['myApp.services'])
                         $('#chatbox .panel-body#chat-text-list').mCustomScrollbar("update");
                         $timeout(function() {
                             $('#chatbox .panel-body#chat-text-list').mCustomScrollbar("scrollTo", "bottom");
-                        }, 1000);
+                        }, 100);
+
+                    });
+                    
+                    $rootScope.ref.child("questions").on("child_added", function(object) {
+                        $log.debug('adding questions added listener');
+                        var question = angular.fromJson(angular.toJson((object.val())));
+                        $scope.answer = question.answer;
+                        $scope.point = question.first_point;
+                        $scope.hints = question.clues;
+                        
+                        servertime.async().then(function(time) {
+                            var chat = {
+                                action: 'chat',
+                                name: 'Matigeni Bot',
+                                text: 'Tetoott Tetoott. Here come New question...',
+                                timestamp: time,
+                                userid: null
+                            };
+                            $scope.chats.push(chat);
+                        });
 
                     });
                 };

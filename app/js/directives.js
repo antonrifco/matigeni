@@ -12,6 +12,9 @@ angular.module('myApp.directives', []).
                         updateOnContentResize: true
                     }
                 });
+                $timeout(function() {
+                    elm.mCustomScrollbar("scrollTo", "bottom");
+                }, 100);
             };
         })
         .directive('ngEnter', function() {
