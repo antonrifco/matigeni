@@ -3,8 +3,8 @@
 /* Controllers */
 
 angular.module('myApp.controllers', ['myApp.services'])
-        .controller('MainCtrl', ['$log', '$scope', '$rootScope', '$timeout', 'servertime',
-            function($log, $scope, $rootScope, $timeout, servertime) {
+        .controller('MainCtrl', ['$log', '$scope', '$rootScope', '$timeout', 'DEFAULT_HINTS', 'servertime',
+            function($log, $scope, $rootScope, $timeout, DEFAULT_HINTS, servertime) {
                 $("#transition-timer-carousel").on("slide.bs.carousel", function(event) {
                     //The animate class gets removed so that it jumps straight back to 0%
                     $(".transition-timer-carousel-progress-bar", this)
@@ -25,23 +25,10 @@ angular.module('myApp.controllers', ['myApp.services'])
                 $scope.users = {};
                 $scope.lastupdate = Math.round(+new Date() / 1000);
                 $scope.sendingtext = false;
-                $scope.answer = null;
-                $scope.point = 0;
-                $scope.hints = [
-                    {
-                        image: 'img/matigeni.jpg',
-                        title: 'Matigeni',
-                        text: 'Matigeni is a simple game of location guessing. We feature locations on earth that were damaged because of human error.' 
-                    },{
-                        image: 'img/awareness.jpg',
-                        title: 'Raise Awareness',
-                        text: 'We try to get people\'s awareness about man made disasters that were happening on earth. But, NOT the conventional way.'  
-                    },{
-                        image: 'img/spaceapps.png',
-                        title: 'NASA SpaceApps Challenge Project',
-                        text: 'We are one of the projects submitted for NASA Space Apps Challenge in 2014.' 
-                    }
-                ];
+                $scope.questions = [];
+                $scope.activequestion = null;
+                $scope.hints = DEFAULT_HINTS;
+                $scope.botname = 'Matigeni Bot';
 
                 $scope.$watch(
                         'user', function() {
@@ -50,7 +37,7 @@ angular.module('myApp.controllers', ['myApp.services'])
                                     $scope.loginaction($rootScope.user);
                                 }
                             } else {
-                                if (typeof $rootScope.loginstatus !== 'undefined') {
+                                /*if (typeof $rootScope.loginstatus !== 'undefined') {
                                     var modalInstance = $modal.open({
                                         templateUrl: 'forceLoginModal.html',
                                         controller: 'ForceLoginModalCtrl',
@@ -58,14 +45,24 @@ angular.module('myApp.controllers', ['myApp.services'])
                                         }
                                     });
                                     modalInstance.result.then(function() {
-                                        /* Login button clicked */
                                         $scope.login();
                                     }, function() {
-                                        /* cancel button clicked */
                                     });
-                                }
+                                }*/
                             }
                         });
+
+                $scope.logout = function(){
+                    $rootScope.logout();
+                    $scope.dashboardready = false;
+                    $scope.chats = [];
+                    $scope.users = {};
+                    
+                    $scope.sendingtext = false;
+                    $scope.questions = new Array();
+                    $scope.activequestion = null;
+                    $scope.hints = DEFAULT_HINTS;
+                };
 
                 $scope.login = function() {
                     $rootScope.putonline();
@@ -90,12 +87,13 @@ angular.module('myApp.controllers', ['myApp.services'])
                         var object = snapshot.val();
                         if (object) {
                             $rootScope.user.points = object.points;
-                            $rootScope.user.facts = (object.facts)?object.facts:[];
+                            $rootScope.user.questions = (object.questions)?object.questions:[];
                         } else {
                             $rootScope.user.points = 0;
-                            $rootScope.user.facts = [];
+                            $rootScope.user.questions = [];
                             $rootScope.fbref.$child("users").$child($rootScope.user.id).$set({
-                                points: 0
+                                points: 0,
+                                questions: {'dummy': 1}
                             });
                         }
                     });
@@ -172,7 +170,7 @@ angular.module('myApp.controllers', ['myApp.services'])
                         $log.debug('user added:' + user.name);
                         $scope.users[user.id] = user;
 
-                        gritter_alert('Notification', user.name + " is " + user.status);
+                        //gritter_alert('Notification', user.name + " is " + user.status);
                     });
 
                     $rootScope.ref.child("presence").on("child_removed", function(object) {
@@ -208,29 +206,117 @@ angular.module('myApp.controllers', ['myApp.services'])
                         $('#chatbox .panel-body#chat-text-list').mCustomScrollbar("update");
                         $timeout(function() {
                             $('#chatbox .panel-body#chat-text-list').mCustomScrollbar("scrollTo", "bottom");
-                        }, 100);
+                        }, 1000);
 
                     });
                     
                     $rootScope.ref.child("questions").on("child_added", function(object) {
                         $log.debug('adding questions added listener');
                         var question = angular.fromJson(angular.toJson((object.val())));
-                        $scope.answer = question.answer;
-                        $scope.point = question.first_point;
-                        $scope.hints = question.clues;
                         
-                        servertime.async().then(function(time) {
-                            var chat = {
-                                action: 'chat',
-                                name: 'Matigeni Bot',
-                                text: 'Tetoott Tetoott. Here come New question...',
-                                timestamp: time,
-                                userid: null
-                            };
-                            $scope.chats.push(chat);
+                        var ask = true;
+                        $.each($rootScope.user.questions, function(o, q){
+                            if(_.has(q, 'id') && q.id == question.id){
+                                ask = false;
+                                return true;
+                            }
                         });
+                        
+                        var q = {
+                            id: question.id,
+                            attempt: 0,
+                            answer: question.answer,
+                            point: question.first_point,
+                            hints: _.compact(question.clues)
+                        };
+                        
+                        $scope.questions.push(q);
+                        
+                        if($scope.activequestion == null) {
+                            if(ask) {
+                                $scope.activequestion = q;
+                                $scope.hints = q.hints;
+                                $scope.myguess = '';
+                                servertime.async().then(function(time) {
+                                    var chat = {
+                                        action: 'chat',
+                                        name: $scope.botname,
+                                        text: 'Tetoott Tetoott. Here come New question...',
+                                        timestamp: time,
+                                        userid: null
+                                    };
+                                    $scope.chats.push(chat);
+                                });
+
+                                gritter_alert('Notification', 'Tetoott Tetoott. Here come New question...');
+                            } else {
+                                gritter_alert('Notification', 'You have answered all the questions. There\'s no more questions');
+                            }
+                        }
 
                     });
+                };
+
+                $scope.guess = function(){
+                    if ($scope.myguess == '') {
+                        gritter_alert('Notification', 'Ooops.. Nothing to guess. Please type some answer!');
+                        return;
+                    }
+                    if($scope.activequestion.answer.toLowerCase() == $scope.myguess.toLowerCase()){
+                        gritter_alert('Notification', 'Congratss, you guessed it correctly!');
+                        
+                        servertime.async().then(function(time) {
+                            $rootScope.user.questions.push({
+                                id: $scope.activequestion.id,
+                                timestamp: time
+                            });
+                            var p = parseInt($rootScope.user.points) + parseInt($scope.activequestion.point);
+                            $rootScope.fbref.$child("users").$child($rootScope.user.id).$update({
+                                points: p,
+                                questions: {'dummy': 1}
+                            });
+                            $rootScope.fbref.$child("users").$child($rootScope.user.id).$child('questions').$add({
+                                id:$scope.activequestion.id,
+                                timestamp: time
+                            });
+                            
+                            $.each($scope.questions, function(o, v){
+                                if($scope.activequestion.id === v.id) {
+                                    $scope.questions.splice(o, 1);
+                                    return true;
+                                }
+                            });
+
+                            if($scope.questions.length == 0) {
+                                console.log('no more');
+                                gritter_alert('Notification', 'You have answered all the questions. There\'s no more questions');
+                                $scope.activequestion = null;
+                            } else {
+                                servertime.async().then(function(time) {
+                                    console.log('more');
+                                    var chat = {
+                                        action: 'chat',
+                                        name: $scope.botname,
+                                        text: 'Tetoott Tetoott. Here come New question...',
+                                        timestamp: time,
+                                        userid: null
+                                    };
+                                    $scope.chats.push(chat);
+
+                                    gritter_alert('Notification', 'Tetoott Tetoott. Here come New question...');
+
+                                    /*$.each($scope.questions, function(key, question){
+                                        $scope.activequestion = question;
+                                        return;
+                                    });*/
+                                });
+                            }
+                            
+                        });
+                        
+                    } else {
+                        gritter_alert('Notification', 'Oooopss. The answer is not: ' + $scope.myguess);
+                    }
                 };
 
                 $scope.sendtext = function() {

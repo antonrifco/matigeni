@@ -4,7 +4,7 @@
 
 
 angular.module('myApp.directives', []).
-        directive('scrolledarea', function() {
+        directive('scrolledarea', ['$timeout', function($timeout) {
             return function(scope, elm, attrs) {
                 elm.mCustomScrollbar({
                     scrollInertia: 150,
@@ -12,11 +12,8 @@ angular.module('myApp.directives', []).
                         updateOnContentResize: true
                     }
                 });
-                $timeout(function() {
-                    elm.mCustomScrollbar("scrollTo", "bottom");
-                }, 100);
             };
-        })
+        }])
         .directive('ngEnter', function() {
             return function(scope, element, attrs) {
                 element.bind("keydown keypress", function(event) {

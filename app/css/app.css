@@ -105,30 +105,26 @@
     font-size: 11px;
 }
 
-.panel .slidedown .glyphicon, #chatbox .chat .glyphicon
+.chat .panel .slidedown .glyphicon, .chat .glyphicon
 {
     margin-right: 5px;
 }
 
-.chatbox-heading {
+.chat .chatbox-heading {
     font-size: 15px;
     color: #237ba9;
 }
 
-.panel-body
+#chatbox .panel-body, #peoplebox .panel-body
 {
-    height: 315px;
+    height: 400px;
     padding: 10px;
     background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAARElEQVQYV2NkAAK7U+f/HzIzZASxcQG8ksiacCp8cMPuv4LGIbg85Saiu5V4EyvO2/3vMES4hWRff5oZ958vfRENPQMABCYQCz51+0cAAAAASUVORK5CYII=) repeat;
 }
 
-.panel-body .mCSB_container
+.chat .panel-body .mCSB_container
 {
     margin-right: 20px;
-}
-
-.panel-body.fullscreen {
-    height: 500px;
 }
 
 .chat-time {

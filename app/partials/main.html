@@ -31,7 +31,7 @@
                         <div class="media-body">
                             <h4 class="media-heading" ng-show="!user">Guest</h4>
                             <h4 class="media-heading" ng-show="user">{{user.displayName}}</h4>
-                            <p ng-show="user"><span class="label label-info">{{user.points}} points</span> <span class="label label-warning">{{user.facts.length}} attempts</span></p>
+                            <p ng-show="user"><span class="label label-info">{{user.points}} points</span> <span class="label label-warning">{{user.questions.length}} questions</span></p>
                             <p>
                                 <span ng-show="user" ng-click="logout()" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-remove-circle"></span> Logout</span>
                                 <span ng-show="!user" ng-click="login()" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-flash"></span> Login</span>
@@ -52,7 +52,7 @@
 
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
-                <div class="item" ng-class="{'active':$index==0}" ng-repeat="hint in hints">
+                <div class="item" ng-class="{'active':$index==0}" ng-repeat="hint in hints" ng-cloak>
                     <center>
                         <img ng-src="{{hint.image}}"/>
                     </center>
@@ -74,6 +74,24 @@
 
             <!-- Timer "progress bar" -->
             <hr class="transition-timer-carousel-progress-bar animate" />
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="input-group input-group-lg" ng-hide="user">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-question-sign"></span></span>
+                    <input type="text" class="form-control" placeholder="My Answer" disabled>
+                    <span class="input-group-btn" >
+                        <button type="button" class="btn btn-primary btn-lg" disabled>Submit</button>
+                    </span>
+                </div>
+                <div class="input-group input-group-lg" ng-show="user">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-question-sign"></span></span>
+                    <input type="text" class="form-control" placeholder="My Answer" ng-model="myguess" ng-enter="guess()">
+                    <span class="input-group-btn" >
+                        <button type="button" class="btn btn-primary btn-lg" ng-click="guess()">Submit</button>
+                    </span>
+                </div>
+            </div>
         </div>
     </div>
     <div class="col-md-4" id="accordion">
@@ -100,12 +118,12 @@
                         </li>
                         <li class="left clearfix dn-flip-x" ng-repeat="chat in chats" ng-show="user" ng-cloak>
                             <span class="chat-img pull-left">
-                                <img ng-show="chat.userid" ng-src="https://graph.facebook.com/{{chat.userid}}/picture?small" alt="User Avatar" class="img-circle" />
+                                <img ng-if="chat.userid" ng-src="https://graph.facebook.com/{{chat.userid}}/picture?small" alt="User Avatar" class="img-circle" ng-cloak/>
                                 <img ng-hide="chat.userid" src="http://placehold.it/40/55C1E7/fff&text=MG" alt="User Avatar" class="img-circle" />
                             </span>
                             <div class="chat-body clearfix">
                                 <div class="header">
-                                    <strong class="primary-font">{{chat.name}}</strong>
+                                    <strong class="primary-font" ng-class="{'text-danger': chat.name==botname}">{{chat.name}}</strong>
                                     <small class="pull-right text-muted chat-time">
                                         <span class="glyphicon glyphicon-time"></span>{{chat.timestamp*1000 | date:'MMM d,yyyy H:mm'}}
                                     </small>
@@ -142,7 +160,7 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-primary">
+        <div class="panel panel-primary" id="peoplebox">
             <div class="panel-heading" >
                 <span data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><span class="glyphicon glyphicon-comment"></span> Participants</span>
             </div>
