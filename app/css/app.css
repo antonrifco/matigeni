@@ -64,6 +64,7 @@
 /* END: Carousel Timer */
 
 /* START: Section for Chat */
+
 .chat
 {
     list-style: none;
@@ -88,23 +89,98 @@
     margin-right: 60px;
 }
 
+.chat li .chat-body .idle {
+    color: gray;
+    font-style: italic;
+}
+
+.chat li .chat-body .idle:after {
+    content: " - idle";
+}
 
 .chat li .chat-body p
 {
     margin: 0;
     color: #777777;
+    font-size: 11px;
 }
 
-.panel .slidedown .glyphicon, .chat .glyphicon
+.panel .slidedown .glyphicon, #chatbox .chat .glyphicon
 {
     margin-right: 5px;
 }
 
+.chatbox-heading {
+    font-size: 15px;
+    color: #237ba9;
+}
+
 .panel-body
 {
-    overflow-y: scroll;
-    height: 400px;
+    height: 315px;
+    padding: 10px;
+    background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAARElEQVQYV2NkAAK7U+f/HzIzZASxcQG8ksiacCp8cMPuv4LGIbg85Saiu5V4EyvO2/3vMES4hWRff5oZ958vfRENPQMABCYQCz51+0cAAAAASUVORK5CYII=) repeat;
 }
+
+.panel-body .mCSB_container
+{
+    margin-right: 20px;
+}
+
+.panel-body.fullscreen {
+    height: 500px;
+}
+
+.chat-time {
+    font-size: 65%;
+    right: 0px;
+    margin-top: -8px;
+    position: absolute;
+}
+
+.profile-photo {
+    display: inline-block;
+    height: 28px;
+    width: 28px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.profile-name {
+    color: initial;
+}
+
+.sendbutton {
+    padding-left: 0px;
+    width: 40px;
+    height: 30px;
+    border: 0px;
+    color: white;
+
+    background: rgb(241,231,103); /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(255,185,0,1) 0%, rgba(214,155,0,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,185,0,1)), color-stop(100%,rgba(214,155,0,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgba(255,185,0,1) 0%,rgba(214,155,0,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, rgba(255,185,0,1) 0%,rgba(214,155,0,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, rgba(255,185,0,1) 0%,rgba(214,155,0,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom, rgba(255,185,0,1) 0%,rgba(214,155,0,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffb900', endColorstr='#d69b00',GradientType=0 ); /* IE6-9 */
+}
+
+.sendbutton:hover {
+    background: rgb(241,231,103); /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(241,231,103,1) 0%, rgba(254,182,69,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(241,231,103,1)), color-stop(100%,rgba(254,182,69,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgba(241,231,103,1) 0%,rgba(254,182,69,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, rgba(241,231,103,1) 0%,rgba(254,182,69,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, rgba(241,231,103,1) 0%,rgba(254,182,69,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom, rgba(241,231,103,1) 0%,rgba(254,182,69,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f1e767', endColorstr='#feb645',GradientType=0 ); /* IE6-9 */
+}
+
+
+
+
 
 ::-webkit-scrollbar-track
 {

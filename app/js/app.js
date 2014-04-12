@@ -15,14 +15,15 @@ config(['$routeProvider', function($routeProvider) {
         $routeProvider.otherwise({redirectTo: '/game'});
     }]);
 
-myApp.run(['$rootScope', '$modal', 'HASHBANG', 'FIREBASE_URL', '$firebaseSimpleLogin', '$log',
-    function($rootScope, $modal, HASHBANG, URL, $firebaseSimpleLogin, $log) {
+myApp.run(['$rootScope', '$modal', 'HASHBANG', 'FIREBASE_URL', '$firebaseSimpleLogin', '$firebase', '$log',
+    function($rootScope, $modal, HASHBANG, URL, $firebaseSimpleLogin, $firebase, $log) {
         $rootScope.loaded = false;
         $rootScope.authing = true;
         $rootScope.user = null;
         $rootScope.hashbang = HASHBANG;
         
         $rootScope.ref = new Firebase(URL);
+        $rootScope.fbref = $firebase($rootScope.ref);
         $rootScope.auth = $firebaseSimpleLogin($rootScope.ref);
         $rootScope.firebasecon = true;
         
@@ -37,7 +38,7 @@ myApp.run(['$rootScope', '$modal', 'HASHBANG', 'FIREBASE_URL', '$firebaseSimpleL
             } else if (user) {
                 $rootScope.setloaded(false);
                 // user authenticated with Firebase
-                console.log('Welcome to Getourguide ' + user.first_name);
+                console.log('Welcome to Getourguide ' + user.displayName);
                 $rootScope.user = user;
                 $rootScope.setloaded(true);
                 $rootScope.authing = false;

@@ -25,13 +25,16 @@
                 <div class="well well-sm">
                     <div class="media">
                         <a class="thumbnail pull-left" href="#">
-                            <img class="media-object" src="http://critterapp.pagodabox.com/img/user.jpg">
+                            <img class="media-object" ng-show="!user" src="img/anon.jpg">
+                            <img class="media-object" ng-show="user" ng-src="https://graph.facebook.com/{{user.id}}/picture?type=square">
                         </a>
                         <div class="media-body">
-                            <h4 class="media-heading">First Last Name</h4>
-                            <p><span class="label label-info">888 photos</span> <span class="label label-warning">150 followers</span></p>
+                            <h4 class="media-heading" ng-show="!user">Guest</h4>
+                            <h4 class="media-heading" ng-show="user">{{user.displayName}}</h4>
+                            <p ng-show="user"><span class="label label-info">888 photos</span> <span class="label label-warning">150 followers</span></p>
                             <p>
-                                <a href="#" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-remove-circle"></span> Logout</a>
+                                <span ng-show="user" ng-click="logout()" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-remove-circle"></span> Logout</span>
+                                <span ng-show="!user" ng-click="login()" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-flash"></span> Login</span>
                             </p>
                         </div>
                     </div>
@@ -98,35 +101,43 @@
         </div>
     </div>
     <div class="col-md-4" id="accordion">
-        <div class="panel panel-primary">
+        <div class="panel panel-primary" id="chatbox">
             <div class="panel-heading">
                 <span data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-comment"></span> Chat</span>
             </div>
             <div class="panel-collapse collapse in" id="collapseOne">
-                <div class="panel-body">
+                <div class="panel-body" id='chat-text-list' scrolledarea ng-cloak>
                     <ul class="chat">
                         <li class="left clearfix"><span class="chat-img pull-left">
-                                <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+                                <img src="http://placehold.it/40/55C1E7/fff&text=MG" alt="User Avatar" class="img-circle" />
                             </span>
                             <div class="chat-body clearfix">
                                 <div class="header">
-                                    <strong class="primary-font">Jack Sparrow</strong> <small class="pull-right text-muted">
-                                        <span class="glyphicon glyphicon-time"></span>12 mins ago</small>
+                                    <strong class="primary-font">Matigeni</strong> <small class="pull-right text-muted">
+                                        <span class="glyphicon glyphicon-time"></span>beginning of time</small>
                                 </div>
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                    dolor, quis ullamcorper ligula sodales.
+                                    Welcome to Matigeni game.
                                 </p>
                             </div>
                         </li>
                     </ul>
                 </div>
                 <div class="panel-footer">
-                    <div class="input-group">
-                        <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
-                        <span class="input-group-btn">
-                            <button class="btn btn-warning btn-sm" id="btn-chat">
-                                Send</button>
+                    <div class="input-group" ng-hide="user">
+                        <input type="text" class="form-control input-sm" placeholder="Type your message..." disabled/>
+                        <span class="input-group-btn glyphicon glyphicon-send">
+                            <button class="btn btn-warning btn-sm" style="padding-top: 2px;padding-bottom: 2px" disabled>
+                                <span class="glyphicon glyphicon-send" style="font-size: 19px"></span>
+                            </button>
+                        </span>
+                    </div>
+                    <div class="input-group" ng-show="user" ng-cloak>
+                        <input type="text" class="form-control input-sm" placeholder="Type your message..." ng-model="chattext" ng-enter="sendtext()"/>
+                        <span class="input-group-btn" >
+                            <button class="sendbutton" ng-click="sendtext()">
+                                <span class="glyphicon glyphicon-send" style="font-size: 19px"></span>
+                            </button>
                         </span>
                     </div>
                 </div>
@@ -139,18 +150,14 @@
             <div class="panel-collapse collapse" id="collapseTwo">
                 <div class="panel-body">
                     <ul class="chat">
-                        <li class="left clearfix"><span class="chat-img pull-left">
-                                <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
-                            </span>
+                        <li class="clearfix" ng-repeat="user in users" ng-show="user">
                             <div class="chat-body clearfix">
-                                <div class="header">
-                                    <strong class="primary-font">Jack Sparrow</strong> <small class="pull-right text-muted">
-                                        <span class="glyphicon glyphicon-time"></span>12 mins ago</small>
+                                <div class="header" ng-class="{'idle':user.status!='online'}">
+                                    <a href="https://facebook.com/{{user.id}}" target="_blank">
+                                        <img class="profile-photo media-object" ng-src="https://graph.facebook.com/{{user.id}}/picture?small">
+                                        <strong class="primary-font profile-name">{{user.name}}</strong>
+                                    </a>
                                 </div>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                    dolor, quis ullamcorper ligula sodales.
-                                </p>
                             </div>
                         </li>
                     </ul>
