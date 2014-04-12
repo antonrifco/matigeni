@@ -17,8 +17,9 @@ config(['$routeProvider', function($routeProvider) {
         $routeProvider.otherwise({redirectTo: '/game'});
     }]);
 
-myApp.run(['$rootScope', '$modal', 'HASHBANG', 'FIREBASE_URL', '$firebaseSimpleLogin', '$firebase', '$log',
-    function($rootScope, $modal, HASHBANG, URL, $firebaseSimpleLogin, $firebase, $log) {
+myApp.run(['$rootScope', '$modal', 'HASHBANG', 'WEBURL', 'FIREBASE_URL', '$firebaseSimpleLogin', '$firebase', '$log',
+    function($rootScope, $modal, HASHBANG, WEBURL, URL, $firebaseSimpleLogin, $firebase, $log) {
+        $rootScope.weburl = WEBURL;
         $rootScope.page = 'main';
         $rootScope.loaded = false;
         $rootScope.authing = true;
