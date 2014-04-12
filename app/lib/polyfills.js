@@ -44,3 +44,9 @@ function blink(that){
         $(that).fadeOut(300).fadeIn(100);
     }
 };
+
+function toMonthYear(timestamp){
+    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var date = new Date(timestamp * 1000);
+    return monthNames[date.getMonth()] + ' ' + date.getFullYear();
+}

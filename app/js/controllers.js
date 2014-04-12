@@ -3,8 +3,19 @@
 /* Controllers */
 
 angular.module('myApp.controllers', ['myApp.services'])
-        .controller('AboutCtrl', ['$rootScope', function($rootScope){
-            $rootScope.page = 'about';
+        .controller('AboutCtrl', ['$rootScope',
+            function($rootScope){
+                $rootScope.page = 'about';
+            }
+        ])
+        .controller('RankCtrl', ['$rootScope', '$scope', 'servertime', function($rootScope, $scope, servertime){
+            $rootScope.page = 'rank';
+            $scope.ranks = [];
+            $rootScope.ref.child("ranks").on("child_added", function(object) {
+                var rank = angular.fromJson(angular.toJson((object.val())));
+
+                $scope.ranks.push(rank);
+            });
         }])
         .controller('MainCtrl', ['$log', '$scope', '$rootScope', '$timeout', 'DEFAULT_HINTS', 'servertime',
             function($log, $scope, $rootScope, $timeout, DEFAULT_HINTS, servertime) {
@@ -86,6 +97,19 @@ angular.module('myApp.controllers', ['myApp.services'])
                 $scope.loginaction = function(user) {
                     console.log(user);
                     $scope.dashboardready = true;
+                    
+                    /* initialize points position on ranks table if not exist */
+                    $rootScope.ref.child("ranks/" + user.id).once('value', function(snapshot) {
+                        var object = snapshot.val();
+                        if (!object) {
+                            $rootScope.fbref.$child("ranks").$child($rootScope.user.id).$set({
+                                id: $rootScope.user.id,
+                                name: $rootScope.user.thirdPartyUserData.first_name,
+                                points: 0
+                            });
+                        }
+                    });
+                    
                     $rootScope.ref.child("users/" + user.id).once('value', function(snapshot) {
                         $log.debug('reading user data from firebase');
                         var object = snapshot.val();
@@ -266,8 +290,21 @@ angular.module('myApp.controllers', ['myApp.services'])
                         gritter_alert('Notification', 'Ooops.. Nothing to guess. Please type some answer!');
                         return;
                     }
-                    if($scope.activequestion.answer.toLowerCase() == $scope.myguess.toLowerCase()){
-                        gritter_alert('Notification', 'Congratss, you guessed it correctly!');
+                    var arrAnswer = $scope.activequestion.answer.toLowerCase().split(' ');
+                    var arrGuess = $scope.myguess.toLowerCase().split(' ');
+                    var correct = true;
+                    if(arrGuess.length < arrAnswer.length) {
+                        correct = false;
+                    }
+                    $.each(arrAnswer, function(o, an){
+                        if( _.indexOf(arrGuess, an) === -1 ) {
+                            correct = false;
+                            return true;
+                        }
+                    });
+                    
+                    if(correct){
+                        gritter_alert('Notification', 'Congratss, you guessed it correctly. The Answer is: ' + $scope.activequestion.answer);
                         
                         servertime.async().then(function(time) {
                             $rootScope.user.questions.push({
@@ -275,6 +312,11 @@ angular.module('myApp.controllers', ['myApp.services'])
                                 timestamp: time
                             });
                             var p = parseInt($rootScope.user.points) + parseInt($scope.activequestion.point);
+                            
+                            $rootScope.fbref.$child("ranks").$child($rootScope.user.id).$update({
+                                points: p
+                            });
+                            
                             $rootScope.fbref.$child("users").$child($rootScope.user.id).$update({
                                 points: p,
                                 questions: {'dummy': 1}
@@ -295,6 +337,7 @@ angular.module('myApp.controllers', ['myApp.services'])
                                 console.log('no more');
                                 gritter_alert('Notification', 'You have answered all the questions. There\'s no more questions');
                                 $scope.activequestion = null;
+                                $scope.hints = DEFAULT_HINTS;
                             } else {
                                 servertime.async().then(function(time) {
                                     console.log('more');
@@ -340,4 +383,5 @@ angular.module('myApp.controllers', ['myApp.services'])
                         $scope.sendingtext = false;
                     });
                 };
-            }]);
+            }]
+        );

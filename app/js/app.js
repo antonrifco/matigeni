@@ -12,6 +12,7 @@ var myApp = angular.module('myApp', [
 ]).
 config(['$routeProvider', function($routeProvider) {
         $routeProvider.when('/game', {templateUrl: 'partials/main.html', controller: 'MainCtrl'});
+        $routeProvider.when('/rank', {templateUrl: 'partials/rank.html', controller: 'RankCtrl'});
         $routeProvider.when('/about', {templateUrl: 'partials/about.html', controller: 'AboutCtrl'});
         $routeProvider.otherwise({redirectTo: '/game'});
     }]);

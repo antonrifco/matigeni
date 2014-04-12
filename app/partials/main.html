@@ -24,6 +24,8 @@
             </div>
         </div>
         <!-- The carousel -->
+        <h5 ng-show="user && activequestion">Q: What is this man-made Disaster called? Hints below:</h5>
+        <h5 ng-hide="!user || activequestion">No unanswered questions.</h5>
         <div id="transition-timer-carousel" class="carousel slide transition-timer-carousel" data-ride="carousel">
             <!-- Indicators -->
             <ol class="carousel-indicators">
@@ -59,15 +61,15 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-body">
-                <div class="input-group input-group-lg" ng-hide="user">
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-question-sign"></span></span>
+                <div class="input-group input-group-lg" ng-hide="user && activequestion">
+                    <span class="input-group-addon" id='id_blogin' tooltip-placement="right" tooltip="This field is used to answer the game's questions"><span class="glyphicon glyphicon-question-sign"></span></span>
                     <input type="text" class="form-control" placeholder="My Answer" disabled>
                     <span class="input-group-btn" >
                         <button type="button" class="btn btn-primary btn-lg" disabled>Submit</button>
                     </span>
                 </div>
-                <div class="input-group input-group-lg" ng-show="user">
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-question-sign"></span></span>
+                <div class="input-group input-group-lg" ng-show="user && activequestion">
+                    <span class="input-group-addon" id='id_alogin' tooltip-placement="right" tooltip="Put your answer here. Try to be specific!"><span class="glyphicon glyphicon-question-sign"></span></span>
                     <input type="text" class="form-control" placeholder="My Answer" ng-model="myguess" ng-enter="guess()">
                     <span class="input-group-btn" >
                         <button type="button" class="btn btn-primary btn-lg" ng-click="guess()">Submit</button>
