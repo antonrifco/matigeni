@@ -233,7 +233,8 @@ angular.module('myApp.controllers', ['myApp.services'])
 
                         $('#chatbox .panel-body#chat-text-list').mCustomScrollbar("update");
                         $timeout(function() {
-                            $('#chatbox .panel-body#chat-text-list').mCustomScrollbar("scrollTo", "bottom");
+                            if($('#chatbox .panel-body#chat-text-list').length > 0)
+                                $('#chatbox .panel-body#chat-text-list').mCustomScrollbar("scrollTo", "bottom");
                         }, 1000);
 
                     });
