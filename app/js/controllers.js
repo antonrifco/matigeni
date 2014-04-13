@@ -74,7 +74,7 @@ angular.module('myApp.controllers', ['myApp.services'])
                     $scope.users = {};
                     
                     $scope.sendingtext = false;
-                    $scope.questions = new Array();
+                    $scope.questions = [];
                     $scope.activequestion = null;
                     $scope.hints = DEFAULT_HINTS;
                 };
@@ -269,14 +269,14 @@ angular.module('myApp.controllers', ['myApp.services'])
                             hints: _.compact(question.clues)
                         };
                         
-                        $scope.questions.push(q);
+                        if(ask) { $scope.questions.push(q); }
                         
                         if($scope.activequestion == null) {
                             if(ask) {
-                                $scope.activequestion = q;
-                                $scope.hints = q.hints;
-                                $scope.myguess = '';
                                 servertime.async().then(function(time) {
+                                    $scope.activequestion = q;
+                                    $scope.hints = q.hints;
+                                    $scope.myguess = '';
                                     var chat = {
                                         action: 'chat',
                                         name: $scope.botname,
@@ -285,9 +285,8 @@ angular.module('myApp.controllers', ['myApp.services'])
                                         userid: null
                                     };
                                     $scope.chats.push(chat);
+                                    gritter_alert('Notification', 'Tetoott Tetoott. Here come New question...');
                                 });
-
-                                gritter_alert('Notification', 'Tetoott Tetoott. Here come New question...');
                             } else {
                                 gritter_alert('Notification', 'You have answered all the questions. There\'s no more questions');
                             }
