@@ -113,12 +113,16 @@ angular.module('myApp.controllers', ['myApp.services'])
                     $rootScope.ref.child("users/" + user.id).once('value', function(snapshot) {
                         $log.debug('reading user data from firebase');
                         var object = snapshot.val();
+                        $rootScope.user.questions = [];
                         if (object) {
                             $rootScope.user.points = object.points;
-                            $rootScope.user.questions = (object.questions)?object.questions:[];
+                            $.each(object.questions, function(o, q){
+                                if(_.has(q,'id')){
+                                    $rootScope.user.questions.push(q);
+                                }
+                            });
                         } else {
                             $rootScope.user.points = 0;
-                            $rootScope.user.questions = [];
                             $rootScope.fbref.$child("users").$child($rootScope.user.id).$set({
                                 points: 0,
                                 questions: {'dummy': 1}
@@ -319,8 +323,7 @@ angular.module('myApp.controllers', ['myApp.services'])
                             });
                             
                             $rootScope.fbref.$child("users").$child($rootScope.user.id).$update({
-                                points: p,
-                                questions: {'dummy': 1}
+                                points: p
                             });
                             $rootScope.fbref.$child("users").$child($rootScope.user.id).$child('questions').$add({
                                 id:$scope.activequestion.id,
