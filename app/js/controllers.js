@@ -116,11 +116,17 @@ angular.module('myApp.controllers', ['myApp.services'])
                         $rootScope.user.questions = [];
                         if (object) {
                             $rootScope.user.points = object.points;
-                            $.each(object.questions, function(o, q){
-                                if(_.has(q,'id')){
-                                    $rootScope.user.questions.push(q);
-                                }
-                            });
+                            if(_.has(object, 'questions')){
+                                $.each(object.questions, function(o, q){
+                                    if(_.has(q,'id')){
+                                        $rootScope.user.questions.push(q);
+                                    }
+                                });
+                            } else {
+                                $rootScope.fbref.$child("users").$child($rootScope.user.id).$update({
+                                    questions: {'dummy': 1}
+                                });
+                            }
                         } else {
                             $rootScope.user.points = 0;
                             $rootScope.fbref.$child("users").$child($rootScope.user.id).$set({
