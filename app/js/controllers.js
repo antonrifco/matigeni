@@ -273,8 +273,8 @@ angular.module('myApp.controllers', ['myApp.services'])
                             $scope.questions.push(q); 
                         
                             if($scope.activequestion == null) {
+                                $scope.activequestion = q;
                                 servertime.async().then(function(time) {
-                                    $scope.activequestion = q;
                                     $scope.hints = q.hints;
                                     $scope.myguess = '';
                                     var chat = {
@@ -291,6 +291,43 @@ angular.module('myApp.controllers', ['myApp.services'])
                         }
 
                     });
+                };
+
+                $scope.skip = function() {
+                    var tempq = _.clone($scope.questions);
+                    $.each(tempq, function(o, v){
+                        if(typeof v === 'undefined') return true;
+                        if($scope.activequestion.id === v.id) {
+                            tempq.splice(o, 1);
+                            return true;
+                        }
+                    });
+
+                    if(tempq.length == 0) {
+                        gritter_alert('Notification', 'You can\' skip this question. There\'s no other questions to ask.');
+                    } else {
+                        var start = 0;
+                        var stop = _.random(0, tempq.length - 1);
+                        $.each(tempq, function(key, question){
+                            $scope.activequestion = question;
+                            if(start === stop) return false;
+                            start++;
+                        });
+                        $scope.hints = $scope.activequestion.hints;
+                        $scope.myguess = '';
+                        servertime.async().then(function(time) {
+                            var chat = {
+                                action: 'chat',
+                                name: $scope.botname,
+                                text: 'Tetoott Tetoott. Here come New question...',
+                                timestamp: time,
+                                userid: null
+                            };
+                            $scope.chats.push(chat);
+
+                            gritter_alert('Notification', 'Tetoott Tetoott. Here come New question...');
+                        });
+                    }
                 };
 
                 $scope.guess = function(){
